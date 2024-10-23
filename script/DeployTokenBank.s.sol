@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/presets/ERC20PresetFixedSupply.sol";
 import "../src/tokenbank.sol";
 
 contract DeployTokenBank is Script {
@@ -12,15 +12,21 @@ contract DeployTokenBank is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        // Deploy TokenA
-        ERC20 tokenA = new ERC20("Token A", "TKA");
-        // Mint some initial supply for TokenA
-        tokenA.mint(msg.sender, 1000000 * 10**18);
+        // Deploy TokenA with fixed supply
+        ERC20PresetFixedSupply tokenA = new ERC20PresetFixedSupply(
+            "Token A",
+            "TKA",
+            1000000 * 10**18,
+            msg.sender
+        );
 
-        // Deploy TokenB
-        ERC20 tokenB = new ERC20("Token B", "TKB");
-        // Mint some initial supply for TokenB
-        tokenB.mint(msg.sender, 2000000 * 10**18);
+        // Deploy TokenB with fixed supply
+        ERC20PresetFixedSupply tokenB = new ERC20PresetFixedSupply(
+            "Token B",
+            "TKB",
+            2000000 * 10**18,
+            msg.sender
+        );
 
         // Initial swap rate: 2 TokenB per 1 TokenA
         uint256 initialSwapRate = 2;
